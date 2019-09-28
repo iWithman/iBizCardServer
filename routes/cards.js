@@ -59,7 +59,7 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // Detele a card
-router.delete('/:id',  async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const card = await Card.findByIdAndRemove(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
