@@ -1,13 +1,23 @@
-const { Card } = require('../models/card');
-const auth = require('../middleware/auth');
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
+const cardSchema = new mongoose.Schema({
+  company: String,
+  slogan: String,
+  name: String,
+  profession: String,
+  phone: Number,
+  email: String,
+  address: String,
+  website: String,
+  image: { data: Buffer, contentType: String }
+})
 
+const Card = mongoose.model('Card', cardSchema);
 
 // Create card
-router.post('/', auth, async (req, res) => {
-
+router.post('/', async (req, res) => {
   let card = await Card({
     company: req.body.company,
     slogan: req.body.slogan,
@@ -17,6 +27,7 @@ router.post('/', auth, async (req, res) => {
     email: req.body.email,
     address: req.body.address,
     website: req.body.website,
+    // image: req.body.image
   });
 
   
@@ -28,20 +39,20 @@ router.post('/', auth, async (req, res) => {
 
 // Get all cards
 router.get('/', async (req, res) => {
-  const cards = await Card.find();
+  const cards = await Card.find()
   res.send(cards)
 })
 
 
 // Get one card
-router.get('/:id', async (req, res) => {
+router.get('/:id', async(req, res) => {
   const card = await Card.findById(req.params.id);
   res.send(card)
 })
 
 
 // Update card
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const card = await Card.findByIdAndUpdate(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
@@ -59,7 +70,7 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // Detele a card
-router.delete('/:id',  async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const card = await Card.findByIdAndRemove(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
