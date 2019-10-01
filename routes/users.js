@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const { userValidation } = require('../models/user');
 
 
 
@@ -15,6 +16,12 @@ router.get('/me', auth, async(req, res) => {
 
 
 router.post('/', async(req, res) => {
+
+  const { error } = userValidation(req.body);
+  if(error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
   // get the email
   let user = await User.findOne({ email: req.body.email });
   // check if user existed to reject or not
@@ -23,9 +30,9 @@ router.post('/', async(req, res) => {
   } else {
     // create a new user to return these attributes
     user = new User({
+      company: req.body.company,
       email: req.body.email,
-      password: req.body.password,
-      companyName: req.body.companyName
+      password: req.body.password
     });
     // generate a salt
     const salt = await bcrypt.genSalt(10);
