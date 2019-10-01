@@ -1,12 +1,19 @@
 const { Card } = require('../models/card');
 const auth = require('../middleware/auth');
+const User = require('./users');
 const express = require('express');
 const router = express.Router();
+const { cardValidation } = require('../models/card');
 
 
 
 // Create card
 router.post('/', auth, async (req, res) => {
+  
+  const { error } = cardValidation(req.body)
+  if(error) {
+    return res.status(400).send(error.details[0].message);
+  }
 
   let card = await Card({
     company: req.body.company,
@@ -59,7 +66,7 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // Detele a card
-router.delete('/:id',  async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const card = await Card.findByIdAndRemove(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,

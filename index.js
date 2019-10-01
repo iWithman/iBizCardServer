@@ -1,4 +1,5 @@
 const config = require('config');
+const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 const express =require('express');
 const cors = require('cors');
@@ -11,7 +12,9 @@ if(!config.get('myPrivateKey')) {
   process(1);
 }
 
-mongoose.connect('mongodb://localhost/iBusiness-Card', { useNewUrlParser: true })
+const db = process.env.DB_CONNECT;
+
+mongoose.connect(db, { useNewUrlParser: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Cannot connect to MongoDB...', err));
 
@@ -27,5 +30,5 @@ app.use('/api/users', users);
 
 
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}...`))
