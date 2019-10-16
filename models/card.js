@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { userSchema } = require('../models/user');
 const Joi = require('joi');
 
 const cardSchema = new mongoose.Schema({
@@ -27,7 +28,9 @@ const cardSchema = new mongoose.Schema({
     maxlength: 255
   },
   phone: {
-    type: Number,
+    type: String,
+    minlength: 5,
+    maxlength: 255,
     required: true
   },
   email: {
@@ -52,13 +55,13 @@ const cardSchema = new mongoose.Schema({
 const cardValidation = (card) => {
   const schema = {
     company: Joi.string().min(6).max(15).required(),
-    slogan: Joi.string().min(6).max(15).required(),
-    name: Joi.string().min(6).max(15).required(),
-    profession: Joi.string().min(6).max(15).required(),
-    phone: Joi.number().min(6).max(15).required(),
-    email: Joi.string().min(6).max(15).required(),
+    slogan: Joi.string().min(6).max(30).required(),
+    name: Joi.string().min(6).max(30).required(),
+    profession: Joi.string().min(6).max(30).required(),
+    phone: Joi.string().min(6).max(30).required(),
+    email: Joi.string().min(6).max(30).required().email(),
     address: Joi.string().min(6).max(25),
-    website: Joi.string().min(6).max(15).required(),
+    website: Joi.string().min(6).max(30).required(),
   }
   return Joi.validate(card, schema)
 }
@@ -68,3 +71,4 @@ const Card = mongoose.model('Card', cardSchema);
 
 exports.Card = Card;
 exports.cardValidation = cardValidation;
+exports.cardSchema = cardSchema;

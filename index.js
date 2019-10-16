@@ -28,7 +28,7 @@ if(!config.get('myPrivateKey')) {
 
 const db = process.env.DB_CONNECT;
 
-mongoose.connect(db, { useNewUrlParser: true })
+mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Cannot connect to MongoDB...', err));
 
