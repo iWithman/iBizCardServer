@@ -1,5 +1,6 @@
 const auth = require('../middleware/auth');
 const { User } = require('../models/user');
+const { Card } = require('../models/card');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -7,7 +8,7 @@ const router = express.Router();
 const { userValidation } = require('../models/user');
 
 
-
+// this is to get the current user
 router.get('/me', auth, async(req, res) => {
   const user = await User.findById(req.user._id).select('-password');
   res.send(user);
@@ -32,7 +33,8 @@ router.post('/', async(req, res) => {
     user = new User({
       company: req.body.company,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      isAdmin: req.body.isAdmin
     });
     // generate a salt
     const salt = await bcrypt.genSalt(10);
@@ -46,7 +48,7 @@ router.post('/', async(req, res) => {
   res.header('x-auth-token', token).send({
     _id: user._id,
     email: user.email,
-    companyName: user.companyName
+    company: user.company
   })
 })
 

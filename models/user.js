@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   company: {
     type: String,
     required: true,
@@ -22,7 +23,11 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  isAdmin: Boolean
+  isAdmin: Boolean,
+  // card: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }
 });
 
 const userValidation = (user) => {
@@ -48,3 +53,4 @@ const User = mongoose.model('User', userSchema);
 
 exports.User = User;
 exports.userValidation = userValidation;
+exports.userSchema = userSchema;
