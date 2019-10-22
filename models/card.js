@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { userSchema } = require('../models/user');
 const Joi = require('joi');
 
 const cardSchema = new mongoose.Schema({
