@@ -1,6 +1,4 @@
 const { Card } = require('../models/card');
-const { User } = require('../models/user');
-const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const { cardValidation } = require('../models/card');
@@ -71,7 +69,6 @@ router.put('/:id', async (req, res) => {
     email: req.body.email,
     address: req.body.address,
     website: req.body.website,
-    image: req.body.image
   })
 
   res.send(card)
@@ -89,7 +86,6 @@ router.delete('/:id', async (req, res) => {
     email: req.body.email,
     address: req.body.address,
     website: req.body.website,
-    image: req.body.image
   })
   
   res.send(card)
