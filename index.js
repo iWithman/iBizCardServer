@@ -5,6 +5,7 @@ const express =require('express');
 const cors = require('cors');
 const app = express();
 const cards = require('./routes/cards');
+const auth = require('./routes/auth');
 
 if(!config.get('myPrivateKey')) {
   console.error('FATAL ERROR: myPrivateKey is not defined.');
@@ -13,7 +14,7 @@ if(!config.get('myPrivateKey')) {
 
 const db = process.env.DB_CONNECT;
 
-mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false })
+mongoose.connect('mongodb://localhost/iBC', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Cannot connect to MongoDB...', err));
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cors())
 
 app.use('/api/cards', cards);
+app.use('/api/auth', auth);
 
 
 
