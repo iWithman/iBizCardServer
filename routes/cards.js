@@ -2,11 +2,12 @@ const { Card } = require('../models/card');
 const express = require('express');
 const router = express.Router();
 const { cardValidation } = require('../models/card');
+const auth = require('../middleware/auth');
 
 
 
 // Create card
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   
   const { error } = cardValidation(req.body)
   if(error) {
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res) => {
 
 
 // Update card
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const card = await Card.findByIdAndUpdate(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
@@ -76,7 +77,7 @@ router.put('/:id', async (req, res) => {
 
 
 // Detele a card
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const card = await Card.findByIdAndRemove(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
