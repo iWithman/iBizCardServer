@@ -13,7 +13,9 @@ const cognitoExpress = new CognitoExpress({
 function auth(req, res, next) {
   
   //I'm passing in the access token in header under key accessToken
-  let accessTokenFromClient = req.headers.accesstoken;
+  // let accessTokenFromClient = req.headers.accesstoken;
+  // passing it as id instead of access
+  let accessTokenFromClient = req.headers.token;
 
   //Fail if token not present in header. 
   if (!accessTokenFromClient) return res.status(401).send("Access Token missing from header");
