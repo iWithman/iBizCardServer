@@ -4,7 +4,7 @@ const CognitoExpress = require("cognito-express")
 //Initializing CognitoExpress constructor
 const cognitoExpress = new CognitoExpress({
   region: "us-east-1",
-  cognitoUserPoolId: "us-east-1_zomJGdbtE",
+  cognitoUserPoolId: "us-east-1_lRHQIAbeA",
   tokenUse: "id", //Possible Values: access | id
   tokenExpiration: 3600000 //Up to default expiration of 1 hour (3600000 ms)
 });

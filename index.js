@@ -14,7 +14,7 @@ if(!config.get('myPrivateKey')) {
 
 const db = process.env.DB_CONNECT;
 
-mongoose.connect('mongodb://localhost/iBC', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
+mongoose.connect(db, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Cannot connect to MongoDB...', err));
 
