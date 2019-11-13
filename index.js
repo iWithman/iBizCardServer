@@ -2,14 +2,14 @@ const config = require('config');
 const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 const express =require('express');
+const { handler:cards } = require('./routes/cards');
+const auth = require('./routes/auth');
 const cors = require('cors');
 const app = express();
-const cards = require('./routes/cards');
-const auth = require('./routes/auth');
 
 if(!config.get('myPrivateKey')) {
   console.error('FATAL ERROR: myPrivateKey is not defined.');
-  process(1);
+  process.exit(1);
 }
 
 const db = process.env.DB_CONNECT;
