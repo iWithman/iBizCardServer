@@ -6,6 +6,7 @@ const { handler:cards } = require('./routes/cards');
 const auth = require('./routes/auth');
 const cors = require('cors');
 const app = express();
+const serverless = require('serverless-http');
 
 if(!config.get('myPrivateKey')) {
   console.error('FATAL ERROR: myPrivateKey is not defined.');
@@ -26,8 +27,4 @@ app.use('/api/auth', auth);
 
 
 
-
-
-
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server started on port ${port}...`))
+module.exports.handler = serverless(app);
