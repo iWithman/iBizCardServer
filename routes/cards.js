@@ -1,8 +1,13 @@
-const { Card } = require('../models/card');
+'use strict';
+
+const serverless = require('serverless-http');
 const express = require('express');
-const router = express.Router();
+
+const { Card } = require('../models/card');
 const { cardValidation } = require('../models/card');
 const auth = require('../middleware/auth');
+
+const router = express.Router();
 
 
 
@@ -14,7 +19,7 @@ router.post('/', auth, async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  let card = await Card.findOne({ email: req.body.email });
+  let card = await Card.findOne({ company: req.body.company });
   // check if user existed to reject or not
   if(card) {
     return res.status(400).send('Card company already created.')
@@ -46,39 +51,54 @@ router.post('/', auth, async (req, res) => {
 
 // Get all cards
 router.get('/', async (req, res) => {
-  const cards = await Card.find()
-  res.send(cards)
-  // console.log(cards);
+  try{
+    const cards = await Card.find()
+    res.send(cards)
+
+  } catch(ex) {
+    res.status(500).send('Something failed.')
+  }
 })
 
 
 // Get one card
 router.get('/:id', async (req, res) => {
-  const card = await Card.findById(req.params.id)
-  res.send(card)
+  try{
+    const card = await Card.findById(req.params.id)
+    res.send(card)
+
+  } catch(ex) {
+    res.status(500).send('Something failed.')
+  }
 })
 
 
 // Update card
 router.put('/:id', auth, async (req, res) => {
-  const card = await Card.findByIdAndUpdate(req.params.id, {
-    company: req.body.company,
-    slogan: req.body.slogan,
-    name: req.body.name,
-    profession: req.body.profession,
-    phone: req.body.phone,
-    email: req.body.email,
-    address: req.body.address,
-    website: req.body.website,
-  })
+  try{
+    const card = await Card.findByIdAndUpdate(req.params.id, {
+      company: req.body.company,
+      slogan: req.body.slogan,
+      name: req.body.name,
+      profession: req.body.profession,
+      phone: req.body.phone,
+      email: req.body.email,
+      address: req.body.address,
+      website: req.body.website,
+    })
+  
+    res.send(card)
 
-  res.send(card)
+  } catch(ex) {
+    res.status(500).send('Something failed.')
+  }
 })
 
 
 // Detele a card
 router.delete('/:id', auth, async (req, res) => {
-  const card = await Card.findByIdAndRemove(req.params.id, {
+  try{
+    const card = await Card.findByIdAndRemove(req.params.id, {
     company: req.body.company,
     slogan: req.body.slogan,
     name: req.body.name,
@@ -90,7 +110,10 @@ router.delete('/:id', auth, async (req, res) => {
   })
   
   res.send(card)
+  } catch(ex) {
+    res.status(500).send('Something failed.')
+  }
 })
 
 
-module.exports = router;
+module.exports.handler = router;

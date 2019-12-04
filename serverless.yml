@@ -24,6 +24,8 @@ service: iBizCardServer
 provider:
   name: aws
   runtime: nodejs10.x
+  stage: dev
+  region: us-east-1
 
 # you can overwrite defaults here
 #  stage: dev
@@ -59,24 +61,35 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: routes/cards.cards
+  iBizCardFunc:
+    handler: index.handler
+    environment:
+      SLS_DEBUG: true
     events:
-      - http:
-          path: /cards
-          method: get
-      - http:
-          path: /cards/{id}
-          method: get
-      - http:
-          path: /cards
-          method: post
-      - http:
-          path: /cards
-          method: put
-      - http:
-          path: /cards
-          method: delete
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+      # - http:
+      #     path: api/cards
+      #     method: get
+      #     # cors: true
+      # - http:
+      #     path: api/cards/{id}
+      #     method: get
+      #     # cors: true
+      # - http:
+      #     path: api/cards
+      #     method: post
+      #     # cors: true
+      # - http:
+      #     path: api/cards/{id}
+      #     method: put
+      #     # cors: true
+      # - http:
+      #     path: api/cards/{id}
+      #     method: delete
+          # cors: true
+plugins:
+  - serverless-offline
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
