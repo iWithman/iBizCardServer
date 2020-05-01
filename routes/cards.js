@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 // Create card
-router.post('/', auth, async (req, res) => {
+router.post('/', auth,  async (req, res) => {
   
   const { error } = cardValidation(req.body)
   if(error) {
@@ -40,7 +40,7 @@ router.post('/', auth, async (req, res) => {
       const result = await card.save();
       res.send(result);
     } catch(ex) {
-      console.log(ex.error.details[0].message);
+      res.status(404).send(ex.error.details[0].message)
     }
   }
 
@@ -52,11 +52,13 @@ router.post('/', auth, async (req, res) => {
 // Get all cards
 router.get('/', async (req, res) => {
   try{
+    // Card.find().sort({ company: -1 })
+    // sorting by asc = 1 or desc = -1
     const cards = await Card.find()
     res.send(cards)
 
   } catch(ex) {
-    res.status(500).send('Something failed.')
+    res.status(404).send(ex.error.details[0].message)
   }
 })
 
@@ -68,13 +70,18 @@ router.get('/:id', async (req, res) => {
     res.send(card)
 
   } catch(ex) {
-    res.status(500).send('Something failed.')
+    res.status(404).send('The card with the given ID was not found.')
   }
 })
 
 
 // Update card
 router.put('/:id', auth, async (req, res) => {
+  const { error } = cardValidation(req.body)
+  if(error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
   try{
     const card = await Card.findByIdAndUpdate(req.params.id, {
       company: req.body.company,
@@ -90,7 +97,7 @@ router.put('/:id', auth, async (req, res) => {
     res.send(card)
 
   } catch(ex) {
-    res.status(500).send('Something failed.')
+    res.status(404).send('The card with the given ID was not found.')
   }
 })
 
@@ -111,7 +118,7 @@ router.delete('/:id', auth, async (req, res) => {
   
   res.send(card)
   } catch(ex) {
-    res.status(500).send('Something failed.')
+    res.status(404).send('The card with the given ID was not found.')
   }
 })
 

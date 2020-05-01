@@ -25,6 +25,9 @@ app.use(cors())
 app.use('/api/cards', cards);
 app.use('/api/auth', auth);
 
+const port = process.env.PORT || 3001;
 
+app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
+module.exports = app
