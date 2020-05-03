@@ -1,6 +1,4 @@
 'use strict';
-
-const serverless = require('serverless-http');
 const express = require('express');
 
 const { Card } = require('../models/card');
