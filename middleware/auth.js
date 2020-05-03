@@ -23,7 +23,7 @@ function auth(req, res, next) {
   cognitoExpress.validate(accessTokenFromClient, function(err, response) {
       
       //If API is not authenticated, Return 401 with error message. 
-      if (err) return res.status(401).send(err);
+      if (err) return res.status(401).send('here',err);
       
       //Else API has been authenticated. Proceed.
       res.locals.user = response;

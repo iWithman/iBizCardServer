@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 // Create card
-router.post('/', auth,  async (req, res) => {
+router.post('/', auth, async (req, res) => {
   
   const { error } = cardValidation(req.body)
   if(error) {
